@@ -69,10 +69,10 @@ https://templatemo.com/tm-552-video-catalog
             <div class="tm-welcome-container text-center text-white">
                 <br><br>
                 <div class="tm-welcome-container-inner">
-                    <p id="nama" class="tm-welcome-text mb-1 text-black" align="right"
+                    <!-- <p id="nama" class="tm-welcome-text mb-1 text-black" align="right"
                         style="margin-right: 3%; margin-bottom: 20%;">CYNTHIA
                         YAPUTERA
-                    </p><br>
+                    </p><br> -->
                     <p id="salam" class="tm-welcome-text mb-5 text-black" align="right"
                         style="margin-right: 3%; margin-bottom: 20%;">
                         Semangatku terus
@@ -360,7 +360,7 @@ https://templatemo.com/tm-552-video-catalog
 
                 <footer class="row pt-5">
                     <div class="col-12">
-                        <p class="text-right">Copyright 2024 @Cynthiaction
+                        <p class="text-right">Copyright 2024 ©Cynthiaction
                     </div>
                 </footer>
             </div> <!-- tm-content-container -->
@@ -429,7 +429,7 @@ https://templatemo.com/tm-552-video-catalog
                 }
             });
         })
-        const variasiNama = ["CYNTHIA YAPUTERA"];
+        // const variasiNama = ["CYNTHIA YAPUTERA"];
         const variasiSalam = ["Semangatku terus menerus meluap, POP POP! \nHalo aku Cynthia! yang selalu semangat!"];
         const variasiTimeline = ["Perjalanan Cynthia Selama di JKT48"];
 
@@ -453,16 +453,16 @@ https://templatemo.com/tm-552-video-catalog
         }
 
         async function mulaiKetik() {
-            const namaElement = document.getElementById("nama");
+            // const namaElement = document.getElementById("nama");
             const salamElement = document.getElementById("salam");
             const timelineElement = document.getElementById("timeline");
 
-            const randomNama = variasiNama[Math.floor(Math.random() * variasiNama.length)];
+            // const randomNama = variasiNama[Math.floor(Math.random() * variasiNama.length)];
             const randomSalam = variasiSalam[Math.floor(Math.random() * variasiSalam.length)];
             const randomTimeline = variasiTimeline[Math.floor(Math.random() * variasiTimeline.length)];
 
             // Mulai mengetik nama dan salam secara bersamaan
-            await Promise.all([ketikTeks(namaElement, randomNama), ketikTeks(salamElement, randomSalam), ketikTeks(timelineElement, randomTimeline)]);
+            await Promise.all([ketikTeks(salamElement, randomSalam), ketikTeks(timelineElement, randomTimeline)]);
 
             // Setelah selesai satu putaran, tunggu 4 detik dan mulai putaran baru
             setTimeout(mulaiKetik, 6500);
