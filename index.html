@@ -48,6 +48,28 @@
             margin-right: 10px;
             /* Ruang antar slide */
         }
+
+        .vertical-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* #scrollToTopBtn {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        } */
+
+        #scrollToTopBtn:hover {
+            background-color: #2980b9;
+            /* Warna latar belakang tombol saat hover */
+        }
     </style>
 </head>
 
@@ -381,15 +403,16 @@
                         </div>
                         <div class="video-slide">
                             <iframe width="560" height="315"
-                            src="https://www.youtube.com/embed/ZzgrIX-3leU?si=rJNqXRpwGOd049G7"
-                            title="YouTube video player" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen></iframe>
+                                src="https://www.youtube.com/embed/ZzgrIX-3leU?si=rJNqXRpwGOd049G7"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
                         </div>
                         <!-- Tambahkan lebih banyak video jika diperlukan -->
                     </div>
                 </main>
-                <br><hr style="border: 1px solid black;">
+                <br>
+                <hr style="border: 1px solid black;">
 
                 <!-- Subscribe form and footer links -->
                 <!-- <div class="row mt-5 pt-3">
@@ -433,6 +456,7 @@
 
             <footer class="row pt-5">
                 <div class="col-12">
+                    <div class="vertical-center"><button id="scrollToTopBtn">Scroll to Top</button></div>
                     <p class="text-right">Copyright 2024 ©Cynthiaction All Rights Reserved
                 </div>
             </footer>
@@ -554,6 +578,18 @@
                 contain: true,
                 wrapAround: true,
                 autoPlay: true // Mengaktifkan autoplay
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+            scrollToTopBtn.addEventListener("click", function () {
+                // Scroll to the top of the page
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
             });
         });
     </script>
