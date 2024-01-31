@@ -58,6 +58,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            margin-top: 20px;
         }
 
         #scrollToTopBtn {
@@ -548,16 +549,18 @@
 
         async function mulaiKetik() {
             // const namaElement = document.getElementById("nama");
-            const salamElement = document.getElementById("salam");
+            // const salamElement = document.getElementById("salam"); comment karena salam tidak jadi dipakai
             const timelineElement = document.getElementById("timeline");
 
             // const randomNama = variasiNama[Math.floor(Math.random() * variasiNama.length)];
-            const randomSalam = variasiSalam[Math.floor(Math.random() * variasiSalam.length)];
+            // const randomSalam = variasiSalam[Math.floor(Math.random() * variasiSalam.length)]; comment karena salam tidak jadi dipakai
             const randomTimeline = variasiTimeline[Math.floor(Math.random() * variasiTimeline.length)];
 
             // Mulai mengetik nama dan salam secara bersamaan
-            await Promise.all([ketikTeks(salamElement, randomSalam), ketikTeks(timelineElement, randomTimeline)]);
+            // await Promise.all([ketikTeks(salamElement, randomSalam), ketikTeks(timelineElement, randomTimeline)]); ada perubahan karena salam tidak jadi dipakai
 
+            await Promise.all([ketikTeks(timelineElement, randomTimeline)]);
+            
             // Setelah selesai satu putaran, tunggu 4 detik dan mulai putaran baru
             setTimeout(mulaiKetik, 6500);
         }
