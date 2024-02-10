@@ -25,13 +25,45 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            /* Menangani pemotongan item di layar kecil */
+        }
+
+        .social-icons .social-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            background-color: #3498db;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            /* Menambahkan margin antar tombol */
+            transition: background-color 0.3s ease;
+        }
+
+        .social-icons .social-btn:hover {
+            background-color: #2980b9;
         }
 
         .social-icons img {
             height: 20px;
             width: 20px;
-            margin-bottom: 5px;
+            margin-right: 5px;
             vertical-align: middle;
+        }
+
+        /* Media Query untuk layar kecil (misal: ponsel) */
+        @media only screen and (max-width: 767px) {
+            .social-icons {
+                justify-content: center;
+                /* Pusatkan tombol saat layar kecil */
+            }
+
+            .social-icons .social-btn {
+                width: 100%;
+                /* Gunakan lebar penuh saat layar kecil */
+            }
         }
 
         .instagram {
@@ -58,7 +90,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            margin-top: 35px;
+            /* margin-top: 35px; */
         }
 
         #scrollToTopBtn {
@@ -113,8 +145,7 @@
                                                 <a class="nav-link tm-nav-link text-white" href="about.html">About</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link tm-nav-link text-white"
-                                                    href="join.html">Join Us</a>
+                                                <a class="nav-link tm-nav-link text-white" href="join.html">Join Us</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -365,21 +396,27 @@
                     <p><b>Follow Her Social Media down below for more details : </b></p>
                     <div class="social-icons">
                         <div class="instagram">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1200px-Instagram_icon.png"
-                                alt="Instagram Logo">
-                            <a href="//www.instagram.com/jkt48.cynthia/"> @jkt48.cynthia</a>
+                            <a href="//www.instagram.com/jkt48.cynthia/" class="social-btn">
+                                <img src="img/instagram.png"
+                                    alt="Instagram Logo">
+                                @jkt48.cynthia
+                            </a>
                         </div>
 
                         <div class="tiktok">
-                            <img src="https://w7.pngwing.com/pngs/814/840/png-transparent-tiktok-tiktok-logo-tiktok-icon-thumbnail.png"
-                                alt="Tiktok Logo">
-                            <a href="https://www.tiktok.com/@cynthiajkt48"> @cynthiajkt48</a>
+                            <a href="https://www.tiktok.com/@cynthiajkt48" class="social-btn">
+                                <img src="img/tiktok.png"
+                                    alt="Tiktok Logo">
+                                @cynthiajkt48
+                            </a>
                         </div>
 
                         <div class="twitter">
-                            <img src="https://w7.pngwing.com/pngs/748/680/png-transparent-twitter-x-logo.png"
-                                alt="X Logo">
-                            <a href="https://twitter.com/Y_CynthiaJKT48"> @Y_CynthiaJKT48</a>
+                            <a href="https://twitter.com/Y_CynthiaJKT48" class="social-btn">
+                                <img src="img/x.png"
+                                    alt="X Logo">
+                                @Y_CynthiaJKT48
+                            </a>
                         </div>
                     </div>
                     <hr style="border: 1px solid black;">
@@ -419,26 +456,27 @@
                 <br>
                 <hr style="border: 1px solid black;">
 
-                <!-- <div class="row mt-5 pt-3">
+                <div class="row mt-5 pt-3">
                     <div class="col-xl-6 col-lg-12 mb-4">
                         <div class="tm-bg-gray p-5 h-100">
                             <h3 class="tm-text-primary mb-3">CYNTHIACTION</h3>
-                            <p class="mb-5">Official Fanbase site of Cynthia Yaputera</p>
-                        </div>
-                    </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
-                        <div class="p-5 tm-bg-gray">
-                            <h3 class="tm-text-primary mb-4">Quick Links</h3>
-                            <ul class="list-unstyled tm-footer-links">
-                                <li><a href="#">Duis bibendum</a></li>
-                                <li><a href="#">Purus non dignissim</a></li>
-                                <li><a href="#">Sapien metus gravida</a></li>
-                                <li><a href="#">Eget consequat</a></li>
-                                <li><a href="#">Praesent eu pulvinar</a></li>
-                            </ul>
+                            <p>Official Fanbase site of Cynthia Yaputera</p>
+                            <p>Copyright 2024 ©Cynthiaction All Rights Reserved</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
+                        <div class="p-5 tm-bg-gray">
+                            <h3 class="tm-text-primary mb-4">Our Pages</h3>
+                            <ul class="list-unstyled tm-footer-links">
+                                <li><a href="about.html">About</a></li>
+                                <li><a href="join.html">Join Us</a></li>
+                                <li><a href="error.html">Gallery</a></li>
+                                <li><a href="error.html">Projects</a></li>
+                                <li><a href="error.html">Corner</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
                         <div class="p-5 tm-bg-gray h-100">
                             <h3 class="tm-text-primary mb-4">Our Pages</h3>
                             <ul class="list-unstyled tm-footer-links">
@@ -449,13 +487,13 @@
                                 <li><a href="#">Privacy Policies</a></li>
                             </ul>
                         </div>
-                    </div>
-                </div> -->
+                    </div> -->
+                </div>
 
                 <footer class="row pt-5">
                     <div class="col-12">
                         <div class="vertical-center"><button id="scrollToTopBtn">Scroll to Top</button></div>
-                        <p class="text-right">Copyright 2024 ©Cynthiaction All Rights Reserved
+                        <!-- <p class="text-right">Copyright 2024 ©Cynthiaction All Rights Reserved</p> -->
                     </div>
                 </footer>
             </div> <!-- tm-content-container -->
