@@ -4,300 +4,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cynthiaction</title>
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="img/icon.jpg">
-    <link rel="stylesheet" href="fontawesome/css/all.min.css"> <!-- https://fontawesome.com/ -->
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-    <!-- https://fonts.google.com/ -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/templatemo-video-catalog.css">
-
+    <title>Halaman Gabut</title>
     <style>
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        body {
             margin: 0;
-            background-color: #f0f0f0;
+            padding: 0;
+            overflow: hidden;
+            /* Untuk menghilangkan scrollbars */
         }
 
-        #container {
-            position: relative;
-            width: 800px;
-            height: 600px;
-        }
-
-        .tower {
-            position: absolute;
-            width: 50px;
-            height: 150px;
-            background-color: #444;
-            top: 50px;
-            left: 50px;
-            cursor: move;
-        }
-
-        .window {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background-color: #ccc;
-            top: 250px;
-            left: 550px;
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            padding: 10px;
-        }
-
-        .ball {
-            width: 50px;
-            height: 50px;
-            background-color: #f00;
-            border-radius: 50%;
-            cursor: move;
-        }
-
-        .ball.dragging {
-            border: 2px solid #000;
+        canvas {
+            display: block;
         }
     </style>
 </head>
-<!--
-
-TemplateMo 552 Video Catalog
-
-https://templatemo.com/tm-552-video-catalog
-
--->
 
 <body>
-    <div class="tm-page-wrap mx-auto">
-        <div class="position-relative">
-            <div class="potition-absolute tm-site-header">
-                <div class="container-fluid position-relative">
-                    <div class="row">
-                        <div class="col-7 col-md-4">
-                            <a href="index.html" class="text-center tm-logo-container">
-                                <!-- <i class="tm-site-logo mb-3"></i> -->
-                                <img src="img/icon.jpg" alt="Logo" class="tm-logo" align="left">
-                                <!-- Ganti path/to/logo.png dengan path logo yang sesuai -->
-                                <!-- <h1 class="tm-site-name" style="color:rgb(0, 0, 0); margin-top: 10px;">Cynthiaction</h1> -->
-                            </a>
-                        </div>
-                        <div class="col-5 col-md-8 ml-auto mr-0">
-                            <div class="tm-site-nav">
-                                <nav class="navbar navbar-expand-lg mr-0 ml-auto" id="tm-main-nav">
-                                    <button class="navbar-toggler tm-bg-black py-2 px-3 mr-0 ml-auto collapsed"
-                                        type="button" data-toggle="collapse" data-target="#navbar-nav"
-                                        aria-controls="navbar-nav" aria-expanded="false" aria-label="Toggle navigation">
-                                        <span>
-                                            <i class="fas fa-bars tm-menu-closed-icon"></i>
-                                            <i class="fas fa-times tm-menu-opened-icon"></i>
-                                        </span>
-                                    </button>
-                                    <div class="collapse navbar-collapse tm-nav" id="navbar-nav">
-                                        <ul class="navbar-nav text-uppercase">
-                                            <li class="nav-item">
-                                                <a class="nav-link tm-nav-link text-black" href="index.html">Home <span
-                                                        class="sr-only">(current)</span></a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link tm-nav-link text-black" href="about.html">About</a>
-                                            </li>
-                                            <li class="nav-item active">
-                                                <a class="nav-link tm-nav-link text-black" href="contact.html">Join
-                                                    Us</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="tm-welcome-container tm-fixed-header tm-fixed-header-3" style="height: 800px;">
-                <div class="text-center">
-                </div>
-            </div>
+    <canvas id="canvas"></canvas>
 
-            <div id="tm-fixed-header-bg"></div> -->
-        </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        <!-- Page content -->
-        <main>
-            <div id="container">
-                <div class="tower"></div>
-                <div class="window">
-                    <div class="ball"></div>
-                    <div class="ball"></div>
-                    <div class="ball"></div>
-                </div>
-            </div>
-        </main>
-        <script>
-            const container = document.getElementById('container');
-            const tower = document.querySelector('.tower');
-            const windowBalls = document.querySelectorAll('.window .ball');
+        const balls = [];
 
-            // Draggable tower
-            let initialX, initialY;
+        // Fungsi untuk membuat bola
+        function createBall(x, y, radius, color) {
+            const ball = {
+                x,
+                y,
+                radius,
+                color,
+                velocityX: Math.random() * 6 - 3, // Kecepatan horizontal acak
+                velocityY: -15, // Kecepatan awal vertikal
+                gravity: 0.7, // Gravitasi
+                floorFriction: 0.7, // Gesekan dengan lantai untuk mengurangi kecepatan bola
+                lifeTime: 350, // Waktu hidup bola (dalam frame)
+                age: 0 // Usia bola (dalam frame)
+            };
 
-            tower.addEventListener('mousedown', (event) => {
-                initialX = event.clientX - parseFloat(tower.style.left);
-                initialY = event.clientY - parseFloat(tower.style.top);
+            balls.push(ball);
+        }
 
-                // Prevent the default drag behavior
-                event.preventDefault();
+        // Fungsi untuk menggambar bola
+        function drawBall(ball) {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
 
-                // Attach the event listeners for dragging
-                document.addEventListener('mousemove', onDocumentMouseMove);
-                document.addEventListener('mouseup', onDocumentMouseUp);
+        // Fungsi untuk mengupdate posisi dan animasi bola
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
+
+            balls.forEach((ball, index) => {
+                ball.age++;
+
+                if (ball.age >= ball.lifeTime) { // Hapus bola setelah mencapai waktu hidup
+                    balls.splice(index, 1);
+                    return; // Skip bola yang dihapus dari update
+                }
+
+                ball.y += ball.velocityY;
+                ball.velocityY += ball.gravity;
+
+                // Memantulkan bola ketika menyentuh lantai
+                if (ball.y + ball.radius >= canvas.height) {
+                    ball.y = canvas.height - ball.radius;
+                    ball.velocityY *= -ball.floorFriction;
+                }
+
+                ball.x += ball.velocityX;
+
+                // Geser bola ke arah yang berlawanan jika menyentuh tepi layar
+                if (ball.x + ball.radius >= canvas.width || ball.x - ball.radius <= 0) {
+                    ball.velocityX *= -1;
+                }
+
+                drawBall(ball); // Gambar bola
             });
 
-            function onDocumentMouseMove(event) {
-                if (initialX && initialY) {
-                    const newX = event.clientX - initialX;
-                    const newY = event.clientY - initialY;
+            requestAnimationFrame(update); // Teruskan animasi
+        }
 
-                    // Keep the tower within the container
-                    if (newX >= 0 && newX <= container.clientWidth - tower.clientWidth) {
-                        tower.style.left = newX + 'px';
-                    }
-                    if (newY >= 0 && newY <= container.clientHeight - tower.clientHeight) {
-                        tower.style.top = newY + 'px';
-                    }
-                }
+        // Fungsi untuk menangani klik mouse untuk membuat bola
+        function handleMouseClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            createBall(mouseX, mouseY, 20, getRandomColor());
+        }
+
+        // Fungsi untuk mendapatkan warna acak
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
             }
+            return color;
+        }
 
-            function onDocumentMouseUp() {
-                initialX = null;
-                initialY = null;
+        // Mulai animasi setelah halaman dimuat
+        window.onload = function () {
+            update();
+        };
 
-                // Remove the event listeners for dragging
-                document.removeEventListener('mousemove', onDocumentMouseMove);
-                document.removeEventListener('mouseup', onDocumentMouseUp);
-            }
-
-            // Draggable balls in the window
-            windowBalls.forEach((ball) => {
-                let initialX, initialY;
-
-                ball.addEventListener('mousedown', (event) => {
-                    initialX = event.clientX - parseFloat(ball.style.left);
-                    initialY = event.clientY - parseFloat(ball.style.top);
-
-                    // Prevent the default drag behavior
-                    event.preventDefault();
-
-                    // Attach the event listeners for dragging
-                    document.addEventListener('mousemove', onDocumentMouseMove);
-                    document.addEventListener('mouseup', onDocumentMouseUp);
-
-                    // Remove the click event listener during dragging
-                    ball.removeEventListener('click', onBallClick);
-
-                    // Add a black border to indicate dragging
-                    ball.classList.add('dragging');
-                });
-
-                function onDocumentMouseMove(event) {
-                    if (initialX && initialY) {
-                        const newX = event.clientX - initialX;
-                        const newY = event.clientY - initialY;
-
-                        // Keep the ball within the window
-                        if (newX >= 0 && newX <= window.innerWidth - ball.clientWidth) {
-                            ball.style.left = newX + 'px';
-                        }
-                        if (newY >= 0 && newY <= window.innerHeight - ball.clientHeight) {
-                            ball.style.top = newY + 'px';
-                        }
-                    }
-                }
-
-                function onDocumentMouseUp() {
-                    initialX = null;
-                    initialY = null;
-
-                    // Remove the event listeners for dragging
-                    document.removeEventListener('mousemove', onDocumentMouseMove);
-                    document.removeEventListener('mouseup', onDocumentMouseUp);
-
-                    // Reattach the click event listener
-                    ball.addEventListener('click', onBallClick);
-
-                    // Remove the black border
-                    ball.classList.remove('dragging');
-                }
-
-                // Click functionality
-                const onBallClick = (event) => {
-                    // Add your desired click behavior here
-                    console.log('Ball clicked!');
-
-                    // Make the ball fall
-                    ball.style.transition = 'top 1s, left 1s';
-                    ball.style.top = window.innerHeight - ball.clientHeight + 'px';
-                    ball.style.left = Math.random() * (window.innerWidth - ball.clientWidth) + 'px';
-
-                    // Reattach the click event listener
-                    ball.addEventListener('click', onBallClick);
-                };
-
-                ball.addEventListener('click', onBallClick);
-            });
-        </script>
-
-        <div class="row mt-5 pt-3">
-            <div class="col-xl-6 col-lg-12 mb-4">
-                <div class="tm-bg-gray p-5 h-100">
-                    <h3 class="tm-text-primary mb-3">CYNTHIACTION</h3>
-                    <p>Official Fanbase site of Cynthia Yaputera</p>
-                    <p>Copyright 2024 ©Cynthiaction All Rights Reserved</p>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
-                <div class="p-5 tm-bg-gray">
-                    <h3 class="tm-text-primary mb-4">Our Pages</h3>
-                    <ul class="list-unstyled tm-footer-links">
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="join.html">Join Us</a></li>
-                        <li><a href="error.html">Gallery</a></li>
-                        <li><a href="error.html">Projects</a></li>
-                        <li><a href="error.html">Corner</a></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
-                <div class="p-5 tm-bg-gray h-100">
-                    <h3 class="tm-text-primary mb-4">Our Pages</h3>
-                    <ul class="list-unstyled tm-footer-links">
-                        <li><a href="#">Our Videos</a></li>
-                        <li><a href="#">License Terms</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policies</a></li>
-                    </ul>
-                </div>
-            </div> -->
-        </div>
-
-        <!-- <footer class="row pt-5">
-            <div class="col-12">
-                <p class="text-right">Copyright 2024 ©Cynthiaction All Rights Reserved
-            </div>
-        </footer> -->
-    </div>
-    </div>
-
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/parallax.min.js"></script>
+        // Tambahkan event listener untuk menangani klik mouse
+        canvas.addEventListener('click', handleMouseClick);
+    </script>
 </body>
 
 </html>
