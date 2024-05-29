@@ -21,7 +21,18 @@
         }
     </style>
 </head>
-
+<script>
+    // Fungsi untuk mengubah URL
+    function changeUrl() {
+        const url = window.location.href;
+        if (url.endsWith('.html')) {
+            const newUrl = url.slice(0, -5); // Menghapus ekstensi ".html"
+            history.replaceState(null, '', newUrl); // Mengganti URL tanpa ekstensi ".html"
+        }
+    }
+    // Panggil fungsi saat halaman dimuat
+    window.onload = changeUrl;
+</script>
 <body>
     <div class="tm-page-wrap mx-auto">
         <div class="position-relative">
