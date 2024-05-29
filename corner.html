@@ -11,16 +11,97 @@
             padding: 0;
             overflow: hidden;
             /* Untuk menghilangkan scrollbars */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         canvas {
             display: block;
+            border: 1px solid black;
+        }
+
+        #score {
+            font-size: 24px;
+            margin: 20px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: black;
+        }
+
+        .menu-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1; /* Atur z-index agar menu muncul di atas elemen lain */
+        }
+
+        .menu {
+            display: none; /* Sembunyikan menu awalnya */
+            background-color: #f9f9f9;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            border-radius: 4px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 8px 0;
+            text-decoration: none;
+            color: black;
+        }
+
+        .menu a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .hamburger {
+            cursor: pointer;
+        }
+
+        /* Style untuk hamburger icon */
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 5px 0;
+            transition: transform 0.3s;
+        }
+
+        /* Animasi untuk mengubah hamburger icon menjadi close icon */
+        .change .hamburger div:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .change .hamburger div:nth-child(2) {
+            opacity: 0;
+        }
+
+        .change .hamburger div:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
         }
     </style>
 </head>
 
 <body>
+    <div id="score">Score: 0</div>
     <canvas id="canvas"></canvas>
+
+    <!-- Container untuk hamburger icon dan menu dropdown -->
+    <div class="menu-container">
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="menu" id="menu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="join.html">Join</a>
+        </div>
+    </div>
 
     <script>
         const canvas = document.getElementById('canvas');
@@ -28,27 +109,27 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        let score = 0;
         const balls = [];
+        const stars = [];
 
-        // Fungsi untuk membuat bola
         function createBall(x, y, radius, color) {
             const ball = {
                 x,
                 y,
                 radius,
                 color,
-                velocityX: Math.random() * 6 - 3, // Kecepatan horizontal acak
-                velocityY: -15, // Kecepatan awal vertikal
-                gravity: 0.7, // Gravitasi
-                floorFriction: 0.7, // Gesekan dengan lantai untuk mengurangi kecepatan bola
-                lifeTime: 350, // Waktu hidup bola (dalam frame)
-                age: 0 // Usia bola (dalam frame)
+                velocityX: Math.random() * 6 - 3,
+                velocityY: -15,
+                gravity: 0.7,
+                floorFriction: 0.7,
+                lifeTime: 350,
+                age: 0
             };
 
             balls.push(ball);
         }
 
-        // Fungsi untuk menggambar bola
         function drawBall(ball) {
             ctx.beginPath();
             ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -57,49 +138,105 @@
             ctx.closePath();
         }
 
-        // Fungsi untuk mengupdate posisi dan animasi bola
+        function createStar() {
+            const star = {
+                x: Math.random() * canvas.width,
+                y: Math.random() * (canvas.height - 50),
+                radius: 10,
+                color: 'yellow',
+                velocityX: (Math.random() * 2) - 1,
+                velocityY: (Math.random() * 2) - 1,
+                collected: false
+            };
+            stars.push(star);
+        }
+
+        function drawStar(star) {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = star.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawGround() {
+            ctx.beginPath();
+            ctx.rect(0, canvas.height - 20, canvas.width, 20);
+            ctx.fillStyle = 'green';
+            ctx.fill();
+            ctx.closePath();
+        }
+
         function update() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawGround(); // Draw the ground first
 
             balls.forEach((ball, index) => {
                 ball.age++;
 
-                if (ball.age >= ball.lifeTime) { // Hapus bola setelah mencapai waktu hidup
+                if (ball.age >= ball.lifeTime) {
                     balls.splice(index, 1);
-                    return; // Skip bola yang dihapus dari update
+                    return;
                 }
 
                 ball.y += ball.velocityY;
                 ball.velocityY += ball.gravity;
 
-                // Memantulkan bola ketika menyentuh lantai
-                if (ball.y + ball.radius >= canvas.height) {
-                    ball.y = canvas.height - ball.radius;
+                if (ball.y + ball.radius >=                 ball.y + ball.radius >= canvas.height - 20) {
+                    ball.y = canvas.height - 20 - ball.radius;
                     ball.velocityY *= -ball.floorFriction;
                 }
 
                 ball.x += ball.velocityX;
 
-                // Geser bola ke arah yang berlawanan jika menyentuh tepi layar
                 if (ball.x + ball.radius >= canvas.width || ball.x - ball.radius <= 0) {
                     ball.velocityX *= -1;
                 }
 
-                drawBall(ball); // Gambar bola
+                drawBall(ball);
             });
 
-            requestAnimationFrame(update); // Teruskan animasi
+            stars.forEach((star, index) => {
+                if (star.collected) {
+                    stars.splice(index, 1);
+                    return;
+                }
+
+                star.x += star.velocityX;
+                star.y += star.velocityY;
+
+                if (star.x + star.radius >= canvas.width || star.x - star.radius <= 0) {
+                    star.velocityX *= -1;
+                }
+                if (star.y + star.radius >= canvas.height - 20 || star.y - star.radius <= 0) {
+                    star.velocityY *= -1;
+                }
+
+                drawStar(star);
+            });
+
+            requestAnimationFrame(update);
         }
 
-        // Fungsi untuk menangani klik mouse untuk membuat bola
         function handleMouseClick(event) {
             const rect = canvas.getBoundingClientRect();
             const mouseX = event.clientX - rect.left;
             const mouseY = event.clientY - rect.top;
+
+            stars.forEach(star => {
+                const dx = star.x - mouseX;
+                const dy = star.y - mouseY;
+                if (Math.sqrt(dx * dx + dy * dy) < star.radius) {
+                    star.collected = true;
+                    score++;
+                    document.getElementById('score').innerText = 'Score: ' + score;
+                }
+            });
+
             createBall(mouseX, mouseY, 20, getRandomColor());
         }
 
-        // Fungsi untuk mendapatkan warna acak
         function getRandomColor() {
             const letters = '0123456789ABCDEF';
             let color = '#';
@@ -109,12 +246,18 @@
             return color;
         }
 
-        // Mulai animasi setelah halaman dimuat
+        // Toggle menu visibility when hamburger icon is clicked
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+            document.querySelector('.hamburger').classList.toggle('change');
+        }
+
         window.onload = function () {
             update();
+            setInterval(createStar, 1000);
         };
 
-        // Tambahkan event listener untuk menangani klik mouse
         canvas.addEventListener('click', handleMouseClick);
     </script>
 </body>
