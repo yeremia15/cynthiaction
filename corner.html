@@ -35,11 +35,13 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            z-index: 1; /* Atur z-index agar menu muncul di atas elemen lain */
+            z-index: 1;
+            /* Atur z-index agar menu muncul di atas elemen lain */
         }
 
         .menu {
-            display: none; /* Sembunyikan menu awalnya */
+            display: none;
+            /* Sembunyikan menu awalnya */
             background-color: #f9f9f9;
             box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
             padding: 12px 16px;
@@ -183,7 +185,7 @@
                 ball.y += ball.velocityY;
                 ball.velocityY += ball.gravity;
 
-                if (ball.y + ball.radius >=                 ball.y + ball.radius >= canvas.height - 20) {
+                if (ball.y + ball.radius >= canvas.height - 20) {
                     ball.y = canvas.height - 20 - ball.radius;
                     ball.velocityY *= -ball.floorFriction;
                 }
